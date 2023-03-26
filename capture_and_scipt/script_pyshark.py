@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def Protocol_grpah(Analyses):
+def Protocol_graph(Analyses):
     for Analyse in Analyses:
         cap = pyshark.FileCapture(Analyse, only_summaries=True)
         cap.load_packets()
@@ -30,26 +30,25 @@ def Protocol_grpah(Analyses):
         plt.show()
 
 
-def Analyse_DNS(Analyses):
+def Info_DNS(Analyses):
     for Analyse in Analyses:
         cap = pyshark.FileCapture(Analyse, only_summaries=True)
+        cap2 = pyshark.FileCapture(Analyse, only_summaries=False)
         cap.load_packets()
-
-        for pkt in cap:
-            try:
-                if pkt.dns.qry_name:
-                    print('DNS Request from %s: %s' % (pkt.ip.src, pkt.dns.qry_name))
-            except AttributeError as e:
-                # ignore packets that aren't DNS Request
-                pass
-            try:
-                if pkt.dns.resp_name:
-                    print('DNS Response from %s: %s' % (pkt.ip.src, pkt.dns.resp_name))
-            except AttributeError as e:
-                # ignore packets that aren't DNS Response
-                pass
-
+        cap2.load_packets()
+        
+        print(Analyse)
+        print("\n")
+        for i in range(len(cap)):
+            line = str(cap[i])
+            lineSep = line.split(" ")
+            protocol = lineSep[4]
+            if (protocol == "DNS"):
+                print(cap[i])                 #change cap2 to cap if want to have summaries info
+                print("\n ............................... \n")
+            
+            
 
 Analyses = ["Send_message.pcap", "Open_app.pcap", "No_pick_up.pcap", "Call_pick_up.pcap"]
 
-Analyse_DNS(Analyses)
+Info_DNS(Analyses)
