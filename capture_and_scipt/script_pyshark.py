@@ -29,7 +29,6 @@ def Protocol_graph(Analyses):
         plt.xlabel("protcol")
         plt.show()
 
-
 def Info_DNS(Analyses):
     for Analyse in Analyses:
         cap = pyshark.FileCapture(Analyse, only_summaries=True)
@@ -46,10 +45,30 @@ def Info_DNS(Analyses):
             if (protocol == "DNS"):
                 print(cap[i])                 #change cap2 to cap if want to have summaries info
                 print("\n ............................... \n")
-            
-            
 
-Analyses = ["Send_messages.pcap", "Open_app.pcap", "No_pick_up.pcap", "Call_pick_up.pcap"]
+def Get_Destination_List(Analyse):
+    for Analyse in Analyses:
+        cap = pyshark.FileCapture(Analyse, only_summaries=True)
+        cap.load_packets()
 
+        destList = []
+        print("\n")
+        print(Analyse)
+        print("\n")
+
+        for packet in cap:
+            line = str(packet)
+            lineSep = line.split(" ")
+            if lineSep[3] not in destList:
+                destList.append(lineSep[3])
+
+        for i in destList:
+            print(i)
+
+
+Analyses = [ "Open_app.pcap","Send_messages.pcap", "No_pick_up.pcap", "Call_pick_up.pcap"]
+
+
+#Get_Destination_List(Analyses)
 #Protocol_graph(Analyses)
-Info_DNS(Analyses)
+#Info_DNS(Analyses)
