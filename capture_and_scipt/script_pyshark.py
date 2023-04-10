@@ -66,7 +66,9 @@ def Get_Destination_List(Analyse):
 
         counter = collections.Counter(destList)
         print(counter)
-        plt.pie(x=counter.values(),labels=counter.keys())
+        plt.style.use('ggplot')
+        patches, texts = plt.pie(x=counter.values(),startangle=90)
+        plt.legend(patches, counter.keys(), loc='best')
         plt.show()
 
 
