@@ -20,8 +20,10 @@ def Protocol_graph(Analyses):
             protocolList.append(lineSep[4])
 
         counter = collections.Counter(protocolList)
+        print(counter)
         plt.style.use('ggplot')
         ypos = np.arange(len(list(counter.keys())))
+        print(ypos)
         plt.bar(ypos, list(counter.values()), align='center', alpha=0.5,
                 color=['b', 'r', 'g', 'c', 'm', 'pink', 'purple', 'darkorange', 'violet'])
         plt.xticks(ypos, list(counter.keys()))
@@ -59,16 +61,21 @@ def Get_Destination_List(Analyse):
         for packet in cap:
             line = str(packet)
             lineSep = line.split(" ")
-            if lineSep[3] not in destList:
-                destList.append(lineSep[3])
-
-        for i in destList:
-            print(i)
+            destList.append(lineSep[3])
 
 
-Analyses = [ "Open_app.pcap","Send_messages.pcap", "No_pick_up.pcap", "Call_pick_up.pcap"]
+        counter = collections.Counter(destList)
+        print(counter)
+        plt.pie(x=counter.values(),labels=counter.keys())
+        plt.show()
 
 
-#Get_Destination_List(Analyses)
+Analyses = [ "open_app.pcap","send_messages.pcap", "No_pick_up.pcap", "Call_pick_up.pcap"]
+
+
+
+
 #Protocol_graph(Analyses)
 #Info_DNS(Analyses)
+Get_Destination_List(Analyses)
+
